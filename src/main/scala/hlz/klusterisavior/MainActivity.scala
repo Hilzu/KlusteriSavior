@@ -18,7 +18,10 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main)
-    currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+    val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+    currentLocation =
+      if (lastKnownLocation == null) new Location("None")
+      else lastKnownLocation
     setLocationText(currentLocation)
   }
 

@@ -20,8 +20,8 @@ class CompassView(c: Context, attrs: AttributeSet, style: Int) extends View(c, a
   }
 
   protected override def onDraw(canvas: Canvas) {
-    val cxCompass = getWidth / 2
-    val cyCompass = getHeight / 2
+    val cxCompass = getWidth / 2.0f
+    val cyCompass = getHeight / 2.0f
     val radiusCompass =
       if (cxCompass > cyCompass) cyCompass * 0.9f
       else cxCompass * 0.9f
@@ -31,10 +31,10 @@ class CompassView(c: Context, attrs: AttributeSet, style: Int) extends View(c, a
     canvas.drawLine(
       cxCompass,
       cyCompass,
-      (cxCompass + radiusCompass * math.sin(-direction * math.Pi / 180)).toFloat,
-      (cyCompass - radiusCompass * math.cos(-direction * math.Pi / 180)).toFloat,
+      cxCompass + radiusCompass * math.sin(-direction * math.Pi / 180).toFloat,
+      cyCompass - radiusCompass * math.cos(-direction * math.Pi / 180).toFloat,
       paint)
-    canvas.drawText(String.valueOf(direction), cxCompass, cyCompass, paint)
+    canvas.drawText(direction.toString, cxCompass, cyCompass, paint)
   }
 
   def setDirection(dir: Double) {

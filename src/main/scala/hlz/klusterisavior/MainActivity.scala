@@ -13,6 +13,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   private lazy val orientationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
   private lazy val compassView = findView(TR.compass_view)
   private lazy val locationText = findView(TR.location_text)
+  private lazy val distanceText = findView(TR.distance_text)
   private var currentLocation: Location = null
 
   override def onCreate(savedInstanceState: Bundle) {
@@ -23,6 +24,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
       if (lastKnownLocation == null) new Location("None")
       else lastKnownLocation
     setLocationText(currentLocation)
+    setDistanceText(currentLocation)
   }
 
   override def onStart() {
@@ -55,10 +57,15 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   def onLocationChanged(location: Location) {
     currentLocation = location
     setLocationText(location)
+    setDistanceText(location)
   }
 
   def setLocationText(loc: Location) {
     locationText.setText("Location Lat: %f Long: %f".format(loc.getLatitude, loc.getLongitude))
+  }
+
+  def setDistanceText(loc: Location) {
+    distanceText.setText("Distance: " + (loc distanceTo klusteri) + " meters")
   }
 
   def onProviderDisabled(provider: String) {}

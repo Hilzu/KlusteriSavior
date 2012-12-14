@@ -1,7 +1,7 @@
 package hlz.klusterisavior
 
-import _root_.android.app.Activity
-import _root_.android.os.Bundle
+import android.app.Activity
+import android.os.Bundle
 import android.content.Context
 import android.hardware.{SensorEventListener, SensorEvent, Sensor, SensorManager}
 import MyLocation._
@@ -29,30 +29,28 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
 
   override def onStart() {
     super.onStart()
-    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this)
   }
 
   override def onResume() {
     super.onResume()
     sensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_NORMAL)
+    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this)
   }
 
   override def onPause() {
     super.onPause()
     sensorManager.unregisterListener(this)
+    locationManager.removeUpdates(this)
   }
 
   override def onStop() {
     super.onStop()
-    locationManager.removeUpdates(this)
   }
 
   def onSensorChanged(event: SensorEvent) {
     val azimuth = event.values(0)
     compassView.setDirection(directionToKlusteri(azimuth, currentLocation))
   }
-
-  def onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 
   def onLocationChanged(location: Location) {
     currentLocation = location
@@ -73,4 +71,6 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   def onStatusChanged(provider: String, status: Int, extras: Bundle) {}
 
   def onProviderEnabled(provider: String) {}
+
+  def onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
 }

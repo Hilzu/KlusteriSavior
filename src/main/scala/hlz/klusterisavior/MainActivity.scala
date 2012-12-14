@@ -4,7 +4,7 @@ import _root_.android.app.Activity
 import _root_.android.os.Bundle
 import android.content.Context
 import android.hardware.{SensorEventListener, SensorEvent, Sensor, SensorManager}
-import KlusteriLocation._
+import MyLocation._
 import android.location.{Location, LocationManager, LocationListener}
 
 class MainActivity extends Activity with TypedActivity with SensorEventListener with LocationListener {
@@ -47,7 +47,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
 
   def onSensorChanged(event: SensorEvent) {
     val azimuth = event.values(0)
-    compassView.setDirection(bearingToKlusteri(azimuth, currentLocation))
+    compassView.setDirection(directionToKlusteri(azimuth, currentLocation))
   }
 
   def onAccuracyChanged(sensor: Sensor, accuracy: Int) {}

@@ -14,11 +14,8 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   private lazy val compassView = findView(TR.compass_view)
   private lazy val locationText = findView(TR.location_text)
   private lazy val distanceText = findView(TR.distance_text)
-  private lazy val accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-  private lazy val magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+  private lazy val orientationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
   private var currentLocation: Location = null
-  private var accelerometerValues: Array[Float] = null
-  private var magneticValues: Array[Float] = null
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -43,8 +40,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
 
   override def onResume() {
     super.onResume()
-    sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL)
-    sensorManager.registerListener(this, magneticSensor, SensorManager.SENSOR_DELAY_NORMAL)
+    sensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_NORMAL)
     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this)
   }
 
@@ -59,19 +55,9 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   }
 
   def onSensorChanged(event: SensorEvent) {
-    event.sensor.getType match {
-      case Sensor.TYPE_ACCELEROMETER => accelerometerValues = event.values.clone()
-      case Sensor.TYPE_MAGNETIC_FIELD => magneticValues = event.values.clone()
-    }
-    if (accelerometerValues == null || magneticValues == null) return
+    if (event.sensor.getType != Sensor.TYPE_ORIENTATION) return
 
-    val rotationMatrix = new Array[Float](16)
-    if (!SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerValues, magneticValues)) return
-
-    val orientation = new Array[Float](3)
-    SensorManager.getOrientation(rotationMatrix, orientation)
-
-    compassView.setDirection(directionToKlusteri(toDegrees(orientation(0)), currentLocation))
+    compassView.setDirection(directionToKlusteri(event.values(0), currentLocation))
   }
 
   def onLocationChanged(location: Location) {

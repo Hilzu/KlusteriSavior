@@ -10,12 +10,6 @@ class CompassView(c: Context, attrs: AttributeSet, style: Int) extends View(c, a
   def this(c: Context, attrs: AttributeSet) = this(c, attrs, 0)
 
   private var direction = 0.0
-  private val cacheSize = 20
-  private val directionCache = {
-    val q = mutable.Queue[Double]()
-    for (i <- 0 to cacheSize) q += 0.0
-    q
-  }
 
   private lazy val paint: Paint = {
     val p = new Paint(Paint.ANTI_ALIAS_FLAG)
@@ -45,9 +39,7 @@ class CompassView(c: Context, attrs: AttributeSet, style: Int) extends View(c, a
   }
 
   def setDirection(dir: Double) {
-    directionCache.dequeue()
-    directionCache += dir
-    direction = directionCache.sum / cacheSize
+    direction = dir
     invalidate()
   }
 }

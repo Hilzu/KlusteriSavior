@@ -19,6 +19,11 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main)
+    val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    if (!gpsEnabled) {
+      val alertDialog = new GpsAlertDialog()
+      alertDialog.show(getFragmentManager, "GpsAlertDialog")
+    }
     val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
     currentLocation =
       if (lastKnownLocation == null) new Location("None")

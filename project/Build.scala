@@ -9,7 +9,9 @@ object General {
     version := "0.1",
     versionCode := 0,
     scalaVersion := "2.9.2",
-    platformName in Android := "android-15"
+    platformName in Android := "android-15",
+    javacOptions ++= Seq("-source", "1.6"),
+    javacOptions ++= Seq("-target", "1.6")
   )
 
   val proguardSettings = Seq (

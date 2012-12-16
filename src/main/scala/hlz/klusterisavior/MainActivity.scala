@@ -65,13 +65,19 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
     }
     if (accelerometerValues == null || magneticValues == null) return
 
-    val rotationMatrix = new Array[Float](16)
+    val rotationMatrix = Array[Float](
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1
+    )
     if (!SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerValues, magneticValues)) return
 
     val orientation = new Array[Float](3)
     SensorManager.getOrientation(rotationMatrix, orientation)
 
-    compassView.setDirection(directionToKlusteri(toDegrees(orientation(0)), currentLocation))
+    val azimuth = toDegrees(orientation(0))
+
+    compassView.setDirection(directionToKlusteri(azimuth, currentLocation))
   }
 
   def onLocationChanged(location: Location) {

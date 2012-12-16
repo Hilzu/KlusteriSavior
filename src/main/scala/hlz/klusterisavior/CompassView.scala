@@ -10,7 +10,7 @@ class CompassView(c: Context, attrs: AttributeSet, style: Int) extends View(c, a
   def this(c: Context, attrs: AttributeSet) = this(c, attrs, 0)
 
   private var direction = 0.0
-  private val cacheSize = 20
+  private val cacheSize = 32
   private val directionCache = {
     val q = mutable.Queue[Double]()
     for (i <- 0 to cacheSize) q += 0.0

@@ -13,16 +13,20 @@ object MyLocation {
 
   private val approximateCurrentTime = System.currentTimeMillis()
 
+  private var currentLocation = new Location("None")
+
+  private lazy val declination = {
+    val geoField = new GeomagneticField(
+      currentLocation.getLatitude.toFloat,
+      currentLocation.getLongitude.toFloat,
+      currentLocation.getAltitude.toFloat,
+      approximateCurrentTime
+    )
+    geoField.getDeclination
+  }
+
   def directionToKlusteri(azimuth: Double, currentLocation: Location) = {
-    lazy val declination = {
-      val geoField = new GeomagneticField(
-        currentLocation.getLatitude.toFloat,
-        currentLocation.getLongitude.toFloat,
-        currentLocation.getAltitude.toFloat,
-        approximateCurrentTime
-      )
-      geoField.getDeclination
-    }
+    this.currentLocation = currentLocation
     (azimuth + declination) - (currentLocation bearingTo klusteri)
   }
 }

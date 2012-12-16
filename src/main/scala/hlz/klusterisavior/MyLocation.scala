@@ -13,7 +13,7 @@ object MyLocation {
 
   private val approximateCurrentTime = System.currentTimeMillis()
 
-  private var currentLocation = new Location("None")
+  private var currentLocation: Location = _
 
   private lazy val declination = {
     val geoField = new GeomagneticField(

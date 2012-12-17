@@ -2,4 +2,6 @@
     <string name="app_name">KlusteriSavior</string>
     <string name="hello">Hello world!</string>
     <string name="gps_alert_message">GPS disabled. Do you want to enable it?</string>
+    <string name="at_klusteri_label">Welcome to Klusteri!</string>
+    <string name="at_klusteri_text">You\'re at Klusteri</string>
 </resources>

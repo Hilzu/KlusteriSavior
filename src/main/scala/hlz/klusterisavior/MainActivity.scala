@@ -1,8 +1,8 @@
 package hlz.klusterisavior
 
-import android.app.Activity
+import android.app.{PendingIntent, Activity}
 import android.os.Bundle
-import android.content.Context
+import android.content.{Intent, Context}
 import android.hardware.{SensorEventListener, SensorEvent, Sensor, SensorManager}
 import MyLocation._
 import android.location.{Location, LocationManager, LocationListener}
@@ -32,6 +32,11 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
       else lastKnownLocation
     setLocationText(currentLocation)
     setDistanceText(currentLocation)
+
+    val proximityIntent = new Intent()
+    proximityIntent.setClass(this, classOf[AtKlusteriActivity])
+    locationManager.addProximityAlert(klusteri.getLatitude, klusteri.getLongitude, 10, -1,
+      PendingIntent.getActivity(this, 0, proximityIntent, 0))
   }
 
   override def onStart() {

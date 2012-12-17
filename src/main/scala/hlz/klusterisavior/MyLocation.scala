@@ -28,4 +28,8 @@ object MyLocation {
     this.currentLocation = currentLocation
     magneticAzimuth - (currentLocation bearingTo klusteri) + declination
   }
+
+  def atKlusteri(location: Location): Boolean = {
+    (location distanceTo klusteri) < 20
+  }
 }

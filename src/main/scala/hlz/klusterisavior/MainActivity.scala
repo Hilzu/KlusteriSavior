@@ -32,11 +32,6 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
       else lastKnownLocation
     setLocationText(currentLocation)
     setDistanceText(currentLocation)
-
-    val proximityIntent = new Intent()
-    proximityIntent.setClass(this, classOf[AtKlusteriActivity])
-    locationManager.addProximityAlert(klusteri.getLatitude, klusteri.getLongitude, 10, -1,
-      PendingIntent.getActivity(this, 0, proximityIntent, 0))
   }
 
   override def onStart() {
@@ -66,9 +61,14 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   }
 
   def onLocationChanged(location: Location) {
-    currentLocation = location
-    setLocationText(location)
-    setDistanceText(location)
+    if (atKlusteri(location)) {
+      val intent = new Intent(this, classOf[AtKlusteriActivity])
+      startActivity(intent)
+    } else {
+      currentLocation = location
+      setLocationText(location)
+      setDistanceText(location)
+    }
   }
 
   def setLocationText(loc: Location) {

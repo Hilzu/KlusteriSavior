@@ -13,8 +13,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   private lazy val sensorManager = getSystemService(Context.SENSOR_SERVICE).asInstanceOf[SensorManager]
   private lazy val locationManager = getSystemService(Context.LOCATION_SERVICE).asInstanceOf[LocationManager]
   private lazy val compassView = findView(TR.compass_view)
-  private lazy val latitudeText = findView(TR.latitude_text)
-  private lazy val longitudeText = findView(TR.longitude_text)
+  private lazy val locationText = findView(TR.location_text)
   private lazy val distanceText = findView(TR.distance_text)
   private lazy val lastTimeAtKlusteriText = findView(TR.last_time_text)
   private lazy val orientationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
@@ -32,6 +31,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
     }
     val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
     onLocationChanged(if (lastKnownLocation == null) new Location("None") else lastKnownLocation)
+    if (!atKlusteri(currentLocation)) preferences.edit().putBoolean("AT_KLUSTERI", false)
     setLocationText(currentLocation)
     setDistanceText(currentLocation)
   }
@@ -76,8 +76,7 @@ class MainActivity extends Activity with TypedActivity with SensorEventListener 
   }
 
   def setLocationText(loc: Location) {
-    longitudeText.setText("%.5f".format(loc.getLongitude))
-    latitudeText.setText("%.5f".format(loc.getLatitude))
+    locationText.setText("(%.5f, %.5f)".format(loc.getLongitude, loc.getLatitude))
   }
 
   def setDistanceText(loc: Location) {

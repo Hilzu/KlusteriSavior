@@ -4,4 +4,9 @@
     <string name="gps_alert_message">GPS disabled. Do you want to enable it?</string>
     <string name="at_klusteri_label">Welcome to Klusteri!</string>
     <string name="at_klusteri_text">You\'re at Klusteri</string>
+    <string name="preference_file_key">Fq8Mgu#AbAr$qb1QaOC</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="distance">Distance:</string>
+    <string name="last_time_at_klusteri">Last time at klusteri:</string>
 </resources>
